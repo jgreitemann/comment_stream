@@ -3,6 +3,17 @@
 #include "comment.hpp"
 
 
+template <typename K, typename V>
+std::ostream& operator<< (std::ostream& os, std::map<K,V> const& m) {
+    // structured bindings require C++17, but comment_stream doesn't per se
+    for (auto const& [key, value] : m) {
+        os << key << "\t:\t";
+        os << value << std::endl;
+    }
+    return os;
+}
+
+
 int main () {
     std::map<std::string, double> universe;
     universe["pi"] = 3.141592;
@@ -11,10 +22,9 @@ int main () {
 
     // wrap comment_stream around any other ostream and provide comment string
     comment_stream cs(std::cout, "# ");
-
-    // structured bindings require C++17, but comment_stream doesn't per se
-    for (auto & [key, value] : universe) {
-        cs << key << "\t=\t";
-        cs << value << std::endl;
-    }
+    cs << universe;
+    cs.toggle_commenting();
+    cs << universe;
+    cs.toggle_commenting();
+    cs << universe;
 }
