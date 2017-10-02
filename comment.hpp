@@ -44,7 +44,7 @@ public:
     bool is_commenting() const { return commenting_; }
 private:
     Base * sb;
-    bool begin = false;
+    bool begin = true;
     comment_type const comment;
     bool commenting_ = true;
 };
